@@ -2,7 +2,7 @@
 name: respond
 description: Respond.io unofficial internal API (app.respond.io) for operations missing in the public API, including snippets, closing note categories, custom field update/delete, and Respond AI settings. Auto-triggers on Respond internal API, app.respond.io endpoints, snippet import, AI Assist/Prompt updates, and closing-note/category automation tasks.
 disable-model-invocation: false
-user-invokable: true
+user-invocable: true
 argument-hint: "task description"
 ---
 
