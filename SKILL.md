@@ -79,7 +79,7 @@ Critical payload rules for `POST /workspace/snippet`:
 - Supported keys: `name`, `message`, `topics`, `uid`, `attachments`
 - `uid` must be ASCII alphanumeric
 - Unknown keys can return `ValidationError: Invalid property`
-- `/workspace/snippet/list` response currently returns `data.total=24` and `data.items.length=23` in CBRN. Treat `items` as source of truth.
+- `/workspace/snippet/list` response currently returns `data.total=24` and `data.items.length=23` in some workspaces. Treat `items` as source of truth.
 
 ### Closing Note Categories
 
@@ -155,7 +155,7 @@ Path base: `https://app.respond.io`. Status: `Tested` = verified by replay; `Dis
 
 | Endpoint | Method | Purpose | Status | Notes |
 |---|---|---|---|---|
-| `/workspace/snippet/list` | POST | List snippets | Tested | In CBRN: `data.total` may not match `data.items.length` |
+| `/workspace/snippet/list` | POST | List snippets | Tested | In some workspaces: `data.total` may not match `data.items.length` |
 | `/workspace/snippet` | POST | Create snippet | Tested | Keys: `name,message,topics,uid,attachments` |
 | `/workspace/snippet/{id}` | PUT | Update snippet | Discovered | |
 | `/workspace/snippet/{id}` | DELETE | Delete snippet | Discovered | |
