@@ -343,3 +343,31 @@ CURRENT=$(curl -s "$BASE_URL/integration/respond-ai/settings" \
 3. Re-read endpoint after write and verify exact values.
 4. Update project docs with absolute date and workspace/org IDs.
 5. Log known API quirks encountered during the run.
+
+## 9. Official Outbound Channel Rules (Reference)
+
+Not internal API — platform reference kept here because it's the question that shows up most often when scoping Respond.io work. Sourced from [Respond.io Help Center](https://respond.io/help/capture-leads/sending-outbound-sales-messages), validated 2026-04-19.
+
+| Channel | Cold outbound to new contact | Re-engagement window after contact inactivity | Outside window |
+|---|---|---|---|
+| WhatsApp (Cloud / BSP) | Yes | 24 hours | Pre-approved Message Templates |
+| Facebook Messenger | Yes | **7 days** (via `HUMAN_AGENT` tag extension) | Message Tags |
+| Instagram | Yes | **7 days** (via `HUMAN_AGENT` tag extension) | **Nothing allowed** |
+| Viber | Yes | 24 hours | Chatbot-initiated (10K/mo free) |
+| WeChat | Yes | 48 hours OR 20 messages (whichever first) | Nothing |
+| Telegram | Yes | **No window** | Always open |
+| LINE | Yes | **No window** | Always open |
+| Web chat | Yes | **No window** | Always open |
+| SMS | Yes | **No window** | Always open |
+| Email | Yes | **No window** | Always open |
+
+### What this means in practice
+
+- **Instagram-led funnels** — the 7-day `HUMAN_AGENT` window is wide enough for normal nurture but silent after that. Architecture must capture phone or email early (typically during qualification) to continue on WhatsApp / SMS / email once IG closes.
+- **"ID-based channels are inbound-only" is a misconception.** They accept outbound replies inside their messaging window; they just can't initiate cold without prior contact (because there's no phone number handle — Respond needs the platform-specific user ID, which only appears once the user has messaged you).
+- **Broadcasts** are supported on phone-based channels (WhatsApp, SMS) with templates/campaigns, and on Facebook Messenger with Message Tags. Instagram does **not** support broadcast.
+- **Cold outbound to scraped / purchased leads** — no Respond-official path exists for IG or FB. Third-party scrapers (e.g., Pitch Ghost) live outside Respond and feed leads in once a conversation is established — operate at your own platform-risk.
+
+### Design implication
+
+Respond.io is strongly **inbound-response-first**. A system designed around proactive cold outbound to IG / FB users will hit a ceiling quickly. Treat Respond as the conversation surface, not the CRM — use Airtable / HubSpot / Go High Level as the system of record and sync via n8n / Make. Agents triggering actions from inside Respond is a pattern; Respond as the orchestration layer is an anti-pattern that consistently produces a "tag swamp" at scale.
