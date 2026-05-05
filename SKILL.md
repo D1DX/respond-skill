@@ -50,6 +50,8 @@ Notes:
 
 - JWT is short-lived; refresh by reloading app/respond session.
 
+**Note:** the `chrome-cookies` skill does NOT work for Respond — the Cognito JWT lives in localStorage, not cookies. Continue using manual extraction from DevTools as described above.
+
 ## 3. Endpoint Groups (High Value)
 
 ### Custom Fields
